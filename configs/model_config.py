@@ -74,7 +74,7 @@ LOAD_IN_8BIT = True
 # Load the model with bfloat16 precision. Requires NVIDIA Ampere GPU.
 BF16 = False
 # 本地模型存放的位置
-MODEL_DIR = "model/"
+MODEL_DIR = "models_data/"
 # 本地lora存放的位置
 LORA_DIR = "loras/"
 
