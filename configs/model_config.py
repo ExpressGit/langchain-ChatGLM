@@ -12,12 +12,12 @@ logging.basicConfig(format=LOG_FORMAT)
 embedding_model_dict = {
     "ernie-tiny": "nghuyong/ernie-3.0-nano-zh",
     "ernie-base": "nghuyong/ernie-3.0-base-zh",
-    "text2vec-base": "shibing624/text2vec-base-chinese",
-    "text2vec": "models_data/text2vec-large-chinese",
+    "text2vec-base": "models_data/text2vec-base-chinese",
+    "text2vec": "GanymedeNil/text2vec-large-chinese",
 }
 
 # Embedding model name
-EMBEDDING_MODEL = "text2vec"
+EMBEDDING_MODEL = "text2vec-base"
 
 # Embedding running device
 EMBEDDING_DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
@@ -62,7 +62,31 @@ llm_model_dict = {
         "pretrained_model_name": "fnlp/moss-moon-003-sft",
         "local_model_path": None,
         "provides": "MOSSLLM"
-    }
+    },
+    "vicuna-13b-hf": {
+        "name": "vicuna-13b-hf",
+        "pretrained_model_name": "vicuna-13b-hf",
+        "local_model_path": None,
+        "provides": "LLamaLLM"
+    },
+
+    # 通过 fastchat 调用的模型请参考如下格式
+    "fastchat-chatglm-6b": {
+        "name": "chatglm-6b",  # "name"修改为fastchat服务中的"model_name"
+        "pretrained_model_name": "chatglm-6b",
+        "local_model_path": None,
+        "provides": "FastChatOpenAILLM",  # 使用fastchat api时，需保证"provides"为"FastChatOpenAILLM"
+        "api_base_url": "http://localhost:8000/v1"  # "name"修改为fastchat服务中的"api_base_url"
+    },
+
+    # 通过 fastchat 调用的模型请参考如下格式
+    "fastchat-vicuna-13b-hf": {
+        "name": "vicuna-13b-hf",  # "name"修改为fastchat服务中的"model_name"
+        "pretrained_model_name": "vicuna-13b-hf",
+        "local_model_path": None,
+        "provides": "FastChatOpenAILLM",  # 使用fastchat api时，需保证"provides"为"FastChatOpenAILLM"
+        "api_base_url": "http://localhost:8000/v1"  # "name"修改为fastchat服务中的"api_base_url"
+    },
 }
 
 # LLM 名称
@@ -70,7 +94,7 @@ LLM_MODEL = "chatglm-6b"
 # 如果你需要加载本地的model，指定这个参数  ` --no-remote-model`，或者下方参数修改为 `True`
 NO_REMOTE_MODEL = False
 # 量化加载8bit 模型
-LOAD_IN_8BIT = True
+LOAD_IN_8BIT = False
 # Load the model with bfloat16 precision. Requires NVIDIA Ampere GPU.
 BF16 = False
 # 本地模型存放的位置
@@ -101,6 +125,9 @@ PROMPT_TEMPLATE = """已知信息：
 {context} 
 
 根据上述已知信息，简洁和专业的来回答用户的问题。如果无法从中得到答案，请说 “根据已知信息无法回答该问题” 或 “没有提供足够的相关信息”，不允许在答案中添加编造成分，答案请使用中文。 问题是：{question}"""
+
+# 缓存知识库数量
+CACHED_VS_NUM = 1
 
 # 文本分句长度
 SENTENCE_SIZE = 100
